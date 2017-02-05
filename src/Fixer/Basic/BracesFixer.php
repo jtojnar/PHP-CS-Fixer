@@ -43,7 +43,7 @@ final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterf
 
     private static $defaultConfiguration = array(
         'allow_single_line_closure' => false,
-        'classy_constructs' => self::NEXT_LINE,
+        'position_after_functions_and_oop_constructs' => self::NEXT_LINE,
     );
 
     /**
@@ -68,7 +68,7 @@ final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterf
                 throw new InvalidFixerConfigurationException($this->getName(), sprintf('Expected bool got "%s".', is_object($value) ? get_class($value) : gettype($value)));
             }
 
-            if ('classy_constructs' === $key && !in_array($value, $this->supportedBracePositions, true)) {
+            if ('position_after_functions_and_oop_constructs' === $key && !in_array($value, $this->supportedBracePositions, true)) {
                 throw new InvalidFixerConfigurationException(
                     $this->getName(),
                     sprintf('Position of the opening brace is invalid. Should be one of: "%s".', implode('", "', $this->supportedBracePositions))
@@ -165,11 +165,11 @@ class Foo
     }
 }
 ',
-                    array('classy_constructs' => self::SAME_LINE)
+                    array('position_after_functions_and_oop_constructs' => self::SAME_LINE)
                 ),
             ),
             null,
-            'The `allow_single_line_closure` key could be set to `true` to allow for single line lambda notation. The `classy_constructs` configures whether to place the opening brace on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).',
+            'The `allow_single_line_closure` key could be set to `true` to allow for single line lambda notation. The `position_after_functions_and_oop_constructs` configures whether to place the opening brace after OOP constructs (non-anonymous classes, interfaces, traits, methods) and non-lambda functions on the "next" or "same".',
             self::$defaultConfiguration
         );
     }
@@ -450,9 +450,9 @@ class Foo
             }
 
             if ($token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)) {
-                if ($this->configuration['classy_constructs'] === self::NEXT_LINE) {
+                if ($this->configuration['position_after_functions_and_oop_constructs'] === self::NEXT_LINE) {
                     $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                } elseif ($this->configuration['classy_constructs'] === self::SAME_LINE) {
+                } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::SAME_LINE) {
                     $ensuredWhitespace = ' ';
                 }
 
@@ -469,9 +469,9 @@ class Foo
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
                 } else {
-                    if ($this->configuration['classy_constructs'] === self::NEXT_LINE) {
+                    if ($this->configuration['position_after_functions_and_oop_constructs'] === self::NEXT_LINE) {
                         $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                    } elseif ($this->configuration['classy_constructs'] === self::SAME_LINE) {
+                    } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::SAME_LINE) {
                         $ensuredWhitespace = ' ';
                     }
 
