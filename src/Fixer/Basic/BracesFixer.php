@@ -33,14 +33,14 @@ final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterf
     /**
      * @internal
      */
-    const NEXT_LINE = 'next';
+    const LINE_NEXT = 'next';
 
     /**
      * @internal
      */
-    const SAME_LINE = 'same';
+    const LINE_SAME = 'same';
 
-    private $supportedBracePositions = array(self::NEXT_LINE, self::SAME_LINE);
+    private $supportedBracePositions = array(self::LINE_NEXT, self::LINE_SAME);
 
     /**
      * @var array
@@ -49,7 +49,7 @@ final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterf
 
     private static $defaultConfiguration = array(
         'allow_single_line_closure' => false,
-        'position_after_functions_and_oop_constructs' => self::NEXT_LINE,
+        'position_after_functions_and_oop_constructs' => self::LINE_NEXT,
     );
 
     /**
@@ -171,7 +171,7 @@ class Foo
     }
 }
 ',
-                    array('position_after_functions_and_oop_constructs' => self::SAME_LINE)
+                    array('position_after_functions_and_oop_constructs' => self::LINE_SAME)
                 ),
             ),
             null,
@@ -456,9 +456,9 @@ class Foo
             }
 
             if ($token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)) {
-                if ($this->configuration['position_after_functions_and_oop_constructs'] === self::NEXT_LINE) {
+                if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_NEXT) {
                     $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::SAME_LINE) {
+                } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_SAME) {
                     $ensuredWhitespace = ' ';
                 }
 
@@ -475,9 +475,9 @@ class Foo
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
                 } else {
-                    if ($this->configuration['position_after_functions_and_oop_constructs'] === self::NEXT_LINE) {
+                    if ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_NEXT) {
                         $ensuredWhitespace = $this->whitespacesConfig->getLineEnding().$indent;
-                    } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::SAME_LINE) {
+                    } elseif ($this->configuration['position_after_functions_and_oop_constructs'] === self::LINE_SAME) {
                         $ensuredWhitespace = ' ';
                     }
 
